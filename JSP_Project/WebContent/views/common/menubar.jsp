@@ -49,6 +49,13 @@
 		line-height:50px; /* 위 아래에서 가운데로 조정 */
 	}
 	.menu a:hover{background:darkgray;}
+	.outer{
+		background:black;
+		color:white;
+		width:1000px;
+		margin:auto;
+		margin-top:50px;
+	}
 </style>
 </head>
 <body>
