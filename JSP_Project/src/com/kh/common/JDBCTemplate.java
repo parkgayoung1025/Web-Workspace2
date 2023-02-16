@@ -43,6 +43,8 @@ public class JDBCTemplate {
 			conn = DriverManager.getConnection(prop.getProperty("url"), 
 					   prop.getProperty("username"),
 					   prop.getProperty("password"));
+			// 자동커밋 설정 해제
+			conn.setAutoCommit(false);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -85,10 +85,10 @@
 	</div>
 	<script>
 		function moveNotice(nno) {
-			location.href = "<%= contextPath %>/detail.no?nno="+nno;
+			<%-- location.href = "<%= contextPath %>/detail.no?nno="+nno; --%>
 		};
 		
-		<%-- $(function(){
+		$(function(){
 			$(".list-area>tbody>tr").click(function(){
 				
 				// 클릭했을 때 해당 공지사항의 번호를 가져올 수 있어야 함
@@ -100,7 +100,7 @@
 				// nno값은 클릭했을 때 이동할 게시판의 글 번호
 				location.href = "<%= contextPath %>/detail.no?nno="+nno;
 			}); 
-		}); --%>
+		});
 	</script>
 </body>
 </html>
