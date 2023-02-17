@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.kh.notice.model.service.NoticeService;
 import com.kh.notice.model.vo.Notice;
@@ -40,22 +41,26 @@ public class NoticeUpdateController extends HttpServlet {
 	
 		request.setCharacterEncoding("UTF-8");
 		
+		int nno = Integer.parseInt(request.getParameter("nno"));
+		
 		String noticeTitle = request.getParameter("title");
 		String noticeContent = request.getParameter("content");
-		String noticeWriter = request.getParameter("userNo");
 		
-//		Notice updateN = new NoticeService().updateNotice(noticeTitle, noticeContent, noticeWriter);
+		Notice n = new Notice();
+		n.setNoticeNo(nno);
+		n.setNoticeTitle(noticeTitle);
+		n.setNoticeContent(noticeContent);
 		
-//		if(updateN == null) {
-//			request.getSession().setAttribute("alertMsg", "글이 수정되었습니다.");
-////			response.sendRedirect(request.getContextPath()+"/list.no");
-//			
-//			// 글 등록에 성공했을 때 내가 작성한 게시글로 곧 바로 이동
-//			response.sendRedirect(request.getContextPath()+"/detail.no?nno="+result);
-//		} else {
-//			request.setAttribute("errorMsg", "공지사항 수정 실패");
-//			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-//		}
+		int result = new NoticeService().updateNotice(n);
+		
+		if(result > 0) { // 성공 시 => /detail.no?nno=nno 상세보기 페이지가 보여지도록 함
+			request.getSession().setAttribute("alertMsg", "공지사항이 수정되었습니다.");
+			response.sendRedirect(request.getContextPath()+"/detail.no?nno="+nno);
+		} else { // 실패 => 에러 페이지로 포워딩
+			request.setAttribute("errorMsg", "공지사항 수정 실패");
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			
+		}
 	}
 
 }

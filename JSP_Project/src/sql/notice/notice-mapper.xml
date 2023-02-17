@@ -53,4 +53,17 @@
 		SELECT SEQ_NNO.CURRVAL AS NOTICE_NO
 		FROM DUAL
 	</entry>
+	
+	<entry key="updateNotice">
+		UPDATE NOTICE
+		SET NOTICE_TITLE = ?,
+		    NOTICE_CONTENT = ?
+		WHERE NOTICE_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="deleteNotice">
+		UPDATE NOTICE
+		SET STATUS = 'N'
+		WHERE NOTICE_NO = ?
+	</entry>
 </properties>
