@@ -84,7 +84,7 @@ public class BoardListController extends HttpServlet {
 		/*
 		 * currentPage와 pageLimit에 영향을 받음
 		 * - 공식 구하기
-		 *   pageLimig 10이라는 가정하에 규칙을 구해보기
+		 *   pageLimit 10이라는 가정하에 규칙을 구해보기
 		 *   
 		 *   startPage : 1. 11. 21 . 31 ... => n * 10 + 1 => 10의 배수 + 1
 		 *   만약에 pageLimit 값이 5였다면 => 5의 배수 + 1
@@ -100,7 +100,7 @@ public class BoardListController extends HttpServlet {
 		 *        15                        11      => 1 * pageLimit + 1 => n = 1
 		 *        20                        11      => 1 * pageLimit + 1 => n = 1
 		 *        
-		 *   currentPage의 값이 1~20  -> n=0
+		 *   currentPage의 값이 1~10  -> n=0
 		 *                    11~20 -> n=1
 		 *                    21~30 -> n=2
 		 *                    n = (currentPage - 1) / pageLimit
@@ -146,8 +146,6 @@ public class BoardListController extends HttpServlet {
 		request.setAttribute("pi", pi);
 		request.setAttribute("list", list);
 		
-		System.out.println(pi);
-		System.out.println(list);
 		
 		request.getRequestDispatcher("views/board/boardListView.jsp").forward(request, response);
 	}
