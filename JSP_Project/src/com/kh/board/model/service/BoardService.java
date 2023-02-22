@@ -2,6 +2,7 @@ package com.kh.board.model.service;
 
 import static com.kh.common.JDBCTemplate.*;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -73,11 +74,11 @@ public class BoardService {
 		return result1 * result2; // 혹시 하나라도 실패해서 0이 반환될 경우 아예 실패 값을 반환하기 위해 곱셈 결과를 리턴
 	}
 	
-	public int increaseCount(int bno) {
+	public int increaseCount(int boardNo) {
 		
 		Connection conn = getConnection();
 		
-		int result = new BoardDao().increaseCount(conn, bno);
+		int result = new BoardDao().increaseCount(conn, boardNo);
 		
 		if(result > 0) {
 			commit(conn);
@@ -90,14 +91,95 @@ public class BoardService {
 		return result;
 	}
 	
-	public Board selectBoard(int bno) {
+	public Board selectBoard(int boardNo) {
 		
 		Connection conn = getConnection();
 		
-		Board b = new BoardDao().selectBoard(conn, bno);
+		Board b = new BoardDao().selectBoard(conn, boardNo);
 		
 		close(conn);
 		
 		return b;
+	}
+	
+	public Attachment selectAttachment(int boardNo) {
+		
+		Connection conn = getConnection();
+		
+		Attachment at = new BoardDao().selectAttachment(conn, boardNo);
+		
+		close(conn);
+		
+		return at;
+	}
+	
+	public int updateBoard(Board b, Attachment at) {
+		
+		Connection conn = getConnection();
+		
+		int result1 = new BoardDao().updateBoard(conn, b);
+		
+		int result2 = 1; // 애초에 insert나 update문이 실행조차 되지 않을 경우를 대비해서 1로 초기화시킴
+		
+		// 새롭게 첨부된 파일이 있는 경우에만 update, insert문을 실행시킴
+		if(at != null) {
+			// 기존에 첨부 파일이 있었을 경우 => update문 실행하기 위해서 fileNo값이 필요함
+			if(at.getFileNo() != 0) {
+				result2 = new BoardDao().updateAttachment(conn, at);
+			} else { // 기존에 첨부 파일이 없는 경우 => insert문에는 fileNo값이 필요없어서 at 객체에 fileNo값이 안 담겨있다.
+				result2 = new BoardDao().insertNewAttachment(conn, at);
+			}
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result1*result2;
+	}
+	
+	public int deleteBoard(int boardNo, int userNo, Attachment at) {
+		
+		Connection conn = getConnection();
+		
+		int result = new BoardDao().deleteBoard(conn, boardNo, userNo);
+		int result2 = 1;
+		
+		if(at != null) {
+			result2 = new BoardDao().deleteAttachment(conn, boardNo);
+		}
+		
+		if(result > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result*result2;
+	}
+	
+	public int insertThumbnailBoard(Board b, ArrayList<Attachment> list) {
+		
+		Connection conn = getConnection();
+		
+		int result1 = new BoardDao().insertThumbnailBoard(conn, b);
+		
+		int result2 = new BoardDao().insertAttachmentList(conn, list);
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result1*result2;
 	}
 }

@@ -120,8 +120,6 @@ public class NoticeDao {
 						rset.getString("USER_ID"),
 						rset.getDate("CREATE_DATE")
 						);
-			} else { // 실패
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

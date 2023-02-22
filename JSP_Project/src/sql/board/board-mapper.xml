@@ -51,8 +51,68 @@
 		SELECT BOARD_NO,
 		       CATEGORY_NAME,
 		       BOARD_TITLE,
-		       BOARD_CONTENT
+		       BOARD_CONTENT,
 		       USER_ID,
 		       CREATE_DATE
+		FROM BOARD B
+		JOIN CATEGORY USING(CATEGORY_NO)
+		JOIN MEMBER ON (BOARD_WRITER = USER_NO)
+		WHERE BOARD_NO = ?
+		  AND B.STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectAttachment">
+		 SELECT
+		 	FILE_NO,
+		 	ORIGIN_NAME,
+		 	CHANGE_NAME,
+		 	FILE_PATH,
+		 	NVL(FILE_LEVEL, 0) AS FILE_LEVEL
+		 FROM ATTACHMENT
+		 WHERE REF_BNO = ?
+		 ORDER BY FILE_LEVEL
+	</entry>
+	
+	<entry key="updateBoard">
+		UPDATE BOARD
+		SET CATEGORY_NO = ?,
+		    BOARD_TITLE = ?,
+		    BOARD_CONTENT = ?
+		WHERE BOARD_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="updateAttachment">
+		UPDATE ATTACHMENT
+		SET ORIGIN_NAME = ?,
+		    CHANGE_NAME = ?,
+		    FILE_PATH = ?,
+		    UPLOAD_DATE = SYSDATE
+		WHERE FILE_NO = ?
+	</entry>
+	
+	<entry key="insertNewAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES (SEQ_FNO.NEXTVAL, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="deleteBoard">
+		UPDATE BOARD
+		SET STATUS = 'N'
+		WHERE BOARD_NO = ? AND BOARD_WRITER = ?
+	</entry>
+	
+	<entry key="deleteAttachment">
+		DELETE FROM ATTACHMENT
+		WHERE REF_BNO = ?
+	</entry>
+	
+	<entry key="insertThumbnailBoard">
+		INSERT INTO BOARD(BOARD_NO, BOARD_TYPE, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER)
+		VALUES (SEQ_BNO.NEXTVAL, 2, ?, ?, ?)
+	</entry>
+	
+	<entry key="insertAttachmentList">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL)
+		VALUES (SEQ_FNO.NEXTVAL, SEQ_BNO.CURRVAL, ?, ?, ?, ?)
 	</entry>
 </properties>

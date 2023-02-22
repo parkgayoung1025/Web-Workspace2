@@ -102,6 +102,22 @@
 				</tr> -->
 			</tbody>
 		</table>
+		<script>
+		$(function() {
+			$(".list-area>tbody>tr").click(function(){
+				
+				// 클릭 시 해당 공지사항의 글번호를 알아와야 함
+				// tr 요소의 자손 중에서 첫 번째 td 태그의 영역 안의 내용을 가져올 예정
+				let bno = $(this).children().eq(0).text();
+				
+				// 현재 내가 클릭한 tr의 자손들 중 0번째에 위치한 자식의 textNode 값을 가져온다.
+				
+				// 요청한 url?키=밸류
+			 	// 물음표 뒤의 내용을 쿼리스트링이라고 부름 => 직접 만들어서 넘겨줘야 한다.
+				location.href = "<%= contextPath %>/detail.bo?bno="+bno;
+			});
+		});
+		</script>
 		<br><br>
 		<!-- 페이징바 영역 -->
 		<div align="center" class="paging-area">
@@ -134,15 +150,5 @@
 			<% } %>
 		</div>
 	</div>
-	<script>
-		$(function() {
-			$(".list-area-tbody>tr").click(function(){
-				
-				let bno = $(this).children().eq(0).text();
-				
-				location.href = "<%= contextPath %>/detail.bo?bno="+bno;
-			});
-		});
-	</script>
 </body>
 </html>
