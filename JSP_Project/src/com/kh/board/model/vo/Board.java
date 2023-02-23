@@ -14,7 +14,7 @@ public class Board {
 	private Date createDate;
 	private String status;
 	
-	private String tilteImg;
+	private String tilteImg;//	filePath + changeName;
 
 	public Board() {
 		super();

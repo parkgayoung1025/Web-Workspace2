@@ -182,4 +182,26 @@ public class BoardService {
 		
 		return result1*result2;
 	}
+	
+	public ArrayList<Board> selectThumbnailList() {
+		
+		Connection conn = getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectThumbnailList(conn);
+		
+		close(conn);
+		
+		return list;
+	}
+	
+	public ArrayList<Attachment> selectAttachmentList(int boardNo) {
+		
+		Connection conn = getConnection();
+		
+		ArrayList<Attachment> list = new BoardDao().selectAttachmentList(conn, boardNo);
+		
+		close(conn);
+		
+		return list;
+	}
 }

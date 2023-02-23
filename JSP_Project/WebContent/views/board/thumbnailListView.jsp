@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	.outer{height:800px;}
+	.outer{ min-height:800px; }
 	.list-area{
 		width:760px;
 		margin:auto;
@@ -31,39 +31,42 @@
 			</div>
 		<% } %>
 		<div class="list-area">
-			<div class="thumbnail" align="center">
-				<input type="hidden" value="1">
-				<img src="<%= contextPath %>/resources/thumb_upfiles/animal1.gif" width="200px" hight="150px">
-				<p>
-					NO.1 첫 번째 글 제목 
-					<br>
-					조회수 : 1
-				</p>
-			</div>
-			<div class="thumbnail" align="center">
-				<input type="hidden" value="2">
-				<img src="<%= contextPath %>/resources/thumb_upfiles/animal2.gif" width="200px" hight="150px">
-				<p>
-					NO.2 두 번째 글 제목 
-					<br>
-					조회수 : 1
-				</p>
-			</div>
-			<div class="thumbnail" align="center">
-				<input type="hidden" value="3">
-				<img src="<%= contextPath %>/resources/thumb_upfiles/animal3.gif" width="200px" hight="150px">
-				<p>
-					NO.3 세 번째 글 제목 
-					<br>
-					조회수 : 1
-				</p>
-			</div>
+			<% int count = 1; %>
+			<% for (Board b : list) { %>
+				<div class="thumbnail" align="center">
+					<input type="hidden" value="<%= b.getBoardNo() %>">
+					<img src="<%= contextPath %><%= b.getTilteImg() %>" width="200px" hight="150px">
+					<p>
+						NO.<%= count++ %> <%= b.getBoardTitle() %> 
+						<br>
+						조회수 : <%= b.getCount() %>
+					</p>
+				</div>
+			<% } %>
+<!-- 			<div class="thumbnail" align="center"> -->
+<!-- 				<input type="hidden" value="2"> -->
+<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal2.gif" width="200px" hight="150px"> --%>
+<!-- 				<p> -->
+<!-- 					NO.2 두 번째 글 제목  -->
+<!-- 					<br> -->
+<!-- 					조회수 : 1 -->
+<!-- 				</p> -->
+<!-- 			</div> -->
+<!-- 			<div class="thumbnail" align="center"> -->
+<!-- 				<input type="hidden" value="3"> -->
+<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal3.gif" width="200px" hight="150px"> --%>
+<!-- 				<p> -->
+<!-- 					NO.3 세 번째 글 제목  -->
+<!-- 					<br> -->
+<!-- 					조회수 : 1 -->
+<!-- 				</p> -->
+<!-- 			</div> -->
 		</div>
 	</div>
 	<script>
 		$(function(){
 			$(".thumbnail").click(function(){
-				location.href="<%= contextPath %>/deatil.th?bon="+$(this).children().eq(0).val();
+				location.href="<%= contextPath %>/detail.th?bno="+$(this).children().eq(0).val();
 			});
 		});
 	</script>
