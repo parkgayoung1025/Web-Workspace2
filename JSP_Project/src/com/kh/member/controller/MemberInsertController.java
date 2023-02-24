@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.common.AEScryptor;
 import com.kh.member.model.service.MemberService;
 import com.kh.member.model.vo.Member;
 
@@ -47,6 +48,8 @@ public class MemberInsertController extends HttpServlet {
 		String email = request.getParameter("email"); // 빈 문자열이 전달 될 수도 있다.
 		String address = request.getParameter("address"); // 빈 문자열이 전달 될 수도 있다.
 		String[] interestArr = request.getParameterValues("interest"); // null 값이 전달된 수 있음
+		
+		email = AEScryptor.encrypt(email);
 		
 		// DB에 저장하기 위해 String[] --> String으로 변환
 		// ["운동", "등산"] --> "운동, 등산"
