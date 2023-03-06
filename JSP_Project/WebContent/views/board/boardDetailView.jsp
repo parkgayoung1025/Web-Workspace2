@@ -79,7 +79,7 @@
 						<tr>
 							<th>댓글작성</th>
 							<td>
-								<textarea id="replyContent" cols="50" rows="3" style="resize:none;" readonly>로그인 후 이용 가능한 서비스입니다.</textarea>
+								<textarea id="replyContent" cols="50" rows="3" style="resize:none;"></textarea>
 							</td>
 							<td><button onclick="insertReply();">댓글등록</button></td>
 						</tr>
@@ -123,5 +123,49 @@
 			</table>
 		</div>
 	</div>
+	
+	<script>
+		function insertReply(){
+			$.ajax({
+				url : "<%= contextPath %>/rinsert.bo",
+				data : {
+					content : $("#replyContent").val(),
+					bno : "<%= b.getBoardNo() %>"
+				},
+				success : function(result){
+					// 댓글 등록 성공 시 result = 1
+					// 댓글 등록 실패 시 result = 0
+					if (result > 0) {
+						// 새 댓글 목록 불러오는 함수 호출
+						selectReplyList();
+						// 댓글 내용 비워주기
+					} else {
+						alert("댓글 작성에 실패했습니다.");
+					}
+				},
+				error : function(){
+					console.log("댓글 작성 실패")
+				}
+			});
+		}
+		
+		function selectReplyList(){
+			$.ajax({
+				url : "<%= contextPath %>/rlist.bo",
+				data : {bno : "<%= b.getBoardNo() %>"},
+				success : function(list){
+					
+					// 서버로부터 전달받은 리스트를 반복문을 통해 댓글 목록으로 변환
+					let result = "";
+					for (let i of result) {
+						
+					}
+				},
+				error : function(){
+					console.log("게시글 목록 조회 실패");
+				}
+			});
+		}
+	</script>
 </body>
 </html>

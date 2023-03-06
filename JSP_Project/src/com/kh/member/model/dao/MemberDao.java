@@ -227,4 +227,36 @@ public class MemberDao {
 		
 		return result;
 	}
+	
+	public int checkId(Connection conn, String userId) {
+		
+		// SELECT문 실행 -> 결괏값은 무조건 한 행
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("checkId");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userId);
+			
+			rset = pstmt.executeQuery(); // 업데이트, 인설트, 딜리트만 익스큐트업데이트 사용
+			
+			if (rset.next()) {
+				result = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
 }
