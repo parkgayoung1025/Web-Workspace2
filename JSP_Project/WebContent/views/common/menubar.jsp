@@ -87,7 +87,8 @@
 				</tr>
 				<tr>
 					<th colspan="2">
-						<button>로그인</button>
+						<input type="checkbox" id="saveId"> <label for="saveId">아이디 저장</label>
+						<button type="button" onclick="submitLogin();">로그인</button>
 						<button type="button" onclick="enrollPage();">회원가입</button>
 					</th>
 				</tr>
@@ -101,6 +102,46 @@
 				// 단순한 정적인 페이지 이동 요청이라고 해도 반드시 servlet을 거쳐갈 것 => url에 서블릿 매핑값만 노출되도록 하기
 				location.href = "<%= contextPath %>/enrollForm.me"
 			}
+			
+			function submitLogin(){
+				let userId = $("#login-form input[name=userId]").val();
+				
+				if ($("#saveId").is(":checked")) { // true 체크된 상태
+					document.cookie = "saveId=" + userId + "; path=/; max-age=" + 60*60*24; // 쿠키 최대 유지 시간 설정(1일)
+				} else { // 체크하지 않고 로그인 시, 저장된 쿠키를 삭제
+					document.cookie = "saveId=; path=/; max-age=0;" // 최대 시간을 0으로 설정해서 해당 쿠키를 제거해 주기
+				}
+				
+				$("#login-form").submit();
+			}
+			
+			function getCookie(){
+				let value = "";
+				
+				if (document.cookie.length > 0) {
+					let index = document.cookie.indexOf("saveId=");
+					
+					if (index != -1) { // saveId라는 키 값의 쿠키가 있다면
+						index += "saveId=".length;
+						let end = document.cookie.indexOf(";", index);
+						console.log(end);
+						
+						if (end == -1) {
+							value = document.cookie.substring(index);
+							console.log(value);
+						} else {
+							value = document.cookie.substring(index, end);
+							console.log(value);
+						}
+						$("#login-form input[name=userId]").val(value);
+						$("#saveId").attr("checked", true);
+					}
+				}
+			}
+			
+			$(function(){
+				getCookie();
+			});
 		</script>
 		
 		<% } else { %>

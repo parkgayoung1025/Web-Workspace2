@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class LoginCheckFilter
  */
-@WebFilter({"/insert.bo", "/update.bo", "/detail.bo", "/delete.bo"})
+@WebFilter({"/insert.bo", "/update.bo", "/delete.bo"})
 public class LoginCheckFilter implements Filter {
 
     /**

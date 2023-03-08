@@ -563,4 +563,39 @@ public class BoardDao {
 		
 		return result;
 	}
+	
+	public ArrayList<Reply> selectReplyList(Connection conn, int boardNo){
+		
+		ArrayList<Reply> list = new ArrayList();
+		
+		PreparedStatement pstmt = null;
+		
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectReplyList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while (rset.next()) {
+				list.add(new Reply(
+						rset.getInt("REPLY_NO"),
+						rset.getString("REPLY_CONTENT"),
+						rset.getString("USER_ID"),
+						rset.getString("CREATE_DATE")
+						));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
 }
