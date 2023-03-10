@@ -2,6 +2,7 @@
 <%@ page import="com.kh.board.model.vo.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	Board b = (Board)request.getAttribute("b");
 	Attachment at =(Attachment)request.getAttribute("at");
@@ -26,31 +27,39 @@
 		<table id="detail-area" align="center" border="1">
 			<tr>
 				<th width="70">카테고리</th>
-				<th width="70"><%= b.getCategory() %></th>
+				<th width="70"><c:out value="${b.category}"/></th>
 				<th width="70">제목</th>
-				<td width="350"><%= b.getBoardTitle() %></td>
+				<td width="350"><c:out value="${b.boardTitle}"/></td>
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<th><%= b.getBoardWriter() %></th>
+				<th><c:out value="${b.boardWriter}"/></th>
 				<th>작성일</th>
-				<th><%= b.getCreateDate() %></th>
+				<th><c:out value="${b.createDate}"/></th>
 			</tr>
 			<tr>
 				<th>내용</th>
 				<td colspan="3">
-					<p style="height:200px"><%= b.getBoardContent() %></p>
+					<p style="height:200px"><c:out value="${b.boardContent}"/></p>
 				</td>
 			</tr>
 			<tr>
 				<th>첨부파일</th>
 				<td colspan="3">
-					<% if(at == null) { %>
-						첨부파일이 없습니다.
-					<% } else { %>
-						<!-- href="/jspproject/resources/board_upfiles/2022xxxx.jpg" -->
-						<a download="<%= at.getOriginName() %>" href="<%= contextPath %>/<%= at.getFilePath()+at.getChangeName() %>"><%= at.getOriginName() %></a>
-					<% } %>
+<%-- 					<% if(at == null) { %> --%>
+<!-- 						첨부파일이 없습니다. -->
+<%-- 					<% } else { %> --%>
+<!-- 						href="/jspproject/resources/board_upfiles/2022xxxx.jpg" -->
+<%-- 						<a download="<%= at.getOriginName() %>" href="<%= contextPath %>/<%= at.getFilePath()+at.getChangeName() %>"><%= at.getOriginName() %></a> --%>
+<%-- 					<% } %> --%>
+					<c:choose>
+						<c:when test="${empty at}">
+							첨부파일이 없습니다.
+						</c:when>
+						<c:otherwise>
+							<a download="${at.originName}" href="<%= contextPath %>/${at.filePath}+${at.changeName}">${at.originName}</a>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 		</table>
@@ -58,17 +67,23 @@
 		<div align="center">
 			<a href="<%= contextPath %>/list.bo?currentPage=1" class="btn btn-secondary btn-sm">목록가기</a>
 			<!-- 로그인한 사용자가 해당 게시글의 작성자인 경우 -->
-			<% if(loginUser != null && loginUser.getUserId().equals(b.getBoardWriter())) { %>
-				<a href="<%= contextPath %>/update.bo?bno=<%= b.getBoardNo() %>" class="btn btn-warning btn-sm">수정하기</a>
-				<button onclick="deleteBoard();" class="btn btn-danger btn-sm">삭제하기</button>
-			<% } %>
+<%-- 			<% if(loginUser != null && loginUser.getUserId().equals(b.getBoardWriter())) { %> --%>
+<%-- 				<a href="<%= contextPath %>/update.bo?bno=<%= b.getBoardNo() %>" class="btn btn-warning btn-sm">수정하기</a> --%>
+<!-- 				<button onclick="deleteBoard();" class="btn btn-danger btn-sm">삭제하기</button> -->
+<%-- 			<% } %> --%>
+			<c:choose>
+				<c:when test="${!empty loginUser and loginUser.userId eq b.boardWriter}">
+					<a href="<%= contextPath %>/update.bo?bno=${b.boardNo}" class="btn btn-warning btn-sm">수정하기</a>
+					<button onclick="deleteBoard();" class="btn btn-danger btn-sm">삭제하기</button>
+				</c:when>
+			</c:choose>
 		</div>
 		<script>
 			function deleteBoard() {
 				if(!confirm("정말 삭제하시겠습니까?")) {
 					return;
 				}
-				location.href= "<%= contextPath %>/delete.bo?bno=<%= b.getBoardNo() %>";
+				location.href= "<%= contextPath %>/delete.bo?bno=${b.boardNo}";
 			};
 		</script>
 		<br>
@@ -76,33 +91,60 @@
 		<div id="reply-area">
 			<table border="1" align="center">
 				<thead>
-					<% if(loginUser != null) { %>
-						<!-- 로그인이 되어있을 경우 -->
-						<tr>
+<%-- 					<% if(loginUser != null) { %> --%>
+<!-- 						로그인이 되어있을 경우 -->
+<!-- 						<tr> -->
+<!-- 							<th>댓글작성</th> -->
+<!-- 							<td> -->
+<!-- 								<textarea id="replyContent" cols="50" rows="3" style="resize:none;"></textarea> -->
+<!-- 							</td> -->
+<!-- 							<td><button onclick="insertReply();">댓글등록</button></td> -->
+<!-- 						</tr> -->
+<%-- 					<% } else { %> --%>
+<!-- 						<tr> -->
+<!-- 							<th>댓글작성</th> -->
+<!-- 							<td> -->
+<!-- 								<textarea id="replyContent" cols="50" rows="3" style="resize:none;" readonly>로그인 후 이용 가능한 서비스입니다.</textarea> -->
+<!-- 							</td> -->
+<!-- 							<td><button disabled">댓글등록</button></td> -->
+<!-- 						</tr> -->
+<%-- 					<% } %> --%>
+					<c:choose>
+						<c:when test="${!empty loginUser}">
+							<tr>
 							<th>댓글작성</th>
 							<td>
 								<textarea id="replyContent" cols="50" rows="3" style="resize:none;"></textarea>
 							</td>
 							<td><button onclick="insertReply();">댓글등록</button></td>
 						</tr>
-					<% } else { %>
-						<tr>
+						</c:when>
+						<c:otherwise>
+							<tr>
 							<th>댓글작성</th>
 							<td>
 								<textarea id="replyContent" cols="50" rows="3" style="resize:none;" readonly>로그인 후 이용 가능한 서비스입니다.</textarea>
 							</td>
 							<td><button disabled">댓글등록</button></td>
 						</tr>
-					<% } %>
+						</c:otherwise>
+					</c:choose>
 				</thead>
 				<tbody>
-					<% for (Reply r : list) { %>
+<%-- 					<% for (Reply r : list) { %> --%>
+<!-- 						<tr> -->
+<%-- 							<td><%= r.getReplyWriter() %></td> --%>
+<%-- 							<td><%= r.getReplyContent() %></td> --%>
+<%-- 							<td><%= r.getCreateDate() %></td> --%>
+<!-- 						</tr> -->
+<%-- 					<% } %> --%>
+					<c:forEach var="r" items="${requestScope.list}">
 						<tr>
-							<td><%= r.getReplyWriter() %></td>
-							<td><%= r.getReplyContent() %></td>
-							<td><%= r.getCreateDate() %></td>
+							<td>${r.replyWriter}</td>
+							<td>${r.replyContent}</td>
+							<td>${r.createDate}</td>
 						</tr>
-					<% } %>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
