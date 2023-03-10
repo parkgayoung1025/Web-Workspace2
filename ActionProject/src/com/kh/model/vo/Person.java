@@ -5,6 +5,7 @@ public class Person {
 	private String name;
 	private String gender;
 	private String job;
+	private String testField;
 	
 	public Person() {
 		super();
@@ -16,6 +17,10 @@ public class Person {
 		this.gender = gender;
 		this.job = job;
 	}
+	
+	 public String getTestField() {
+	      return this.testField;
+	   }
 	
 	public String getName() {
 		return name;
