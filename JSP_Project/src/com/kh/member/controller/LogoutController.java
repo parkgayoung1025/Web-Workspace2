@@ -19,27 +19,28 @@ public class LogoutController extends HttpServlet {
      */
     public LogoutController() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		// 로그아웃 요청 처리 => 연동되어 있던 loginUser 세션 정보를 만료 시키기(세션 무효화)
-//		request.getSession().removeAttribute("loginUser");
-		request.getSession().invalidate(); // 세션 영역에 있는 데이터를 모두 날리는 함수
 		
-		// 응답 페이지 => /jspproject
-		// url 재요청 방식
+		// 로그아웃 요청 처리 => 연동되어있던 loginUser 세션정보를 만료시키기(세션 무효화)
+		// request.getSession().removeAttribute("loginUser"); // 이 방법도 사용가능하나 아래 방법이 더 효율적임
+		request.getSession().invalidate(); // invalidate() : 세션 영역에 있는 데이터를 모두 날리는 함수
 		
-		response.sendRedirect(request.getContextPath()); // /jspproject
+		// 응답페이지 => /jspproject
+		// url 재요청방식으로 보내야됨
+		response.sendRedirect(request.getContextPath()); // jspproject
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

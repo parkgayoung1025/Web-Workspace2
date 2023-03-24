@@ -3,14 +3,14 @@ package com.kh.notice.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import static com.kh.common.JDBCTemplate.*; // JDBCTemplate 클래스의 모든 메서드들을 그냥 가져다가 쓸 수 있음
+import static com.kh.common.JDBCTemplate.*; // JDBCTemplate 클래스의 모든 메소드들을 그냥 가져다가 쓸 수 있음
 
 import com.kh.notice.model.dao.NoticeDao;
 import com.kh.notice.model.vo.Notice;
 
 public class NoticeService {
-
-	public ArrayList<Notice> selectNoticeList() {
+	
+	public ArrayList<Notice> selectNoticeList(){
 		
 		Connection conn = getConnection();
 		
@@ -19,6 +19,7 @@ public class NoticeService {
 		close(conn);
 		
 		return list;
+		
 	}
 	
 	public int increaseCount(int nno) {
@@ -29,10 +30,9 @@ public class NoticeService {
 		
 		if(result > 0) {
 			commit(conn);
-		} else {
+		}else {
 			rollback(conn);
 		}
-		
 		close(conn);
 		
 		return result;
@@ -44,24 +44,33 @@ public class NoticeService {
 		
 		Notice n = new NoticeDao().selectNotice(conn, nno);
 		
+		// DML 문이 아니기때문에 트랜젝션 처리 x
 		close(conn);
 		
 		return n;
 	}
 	
-	public int insertNotice(Notice n) {
+	public int insertNotice(String title, String content, int userNo) {
 		
 		Connection conn = getConnection();
 		
-		int result = new NoticeDao().insertNotice(conn, n);
+		int result = new NoticeDao().insertNotice(conn, title, content, userNo);
 		
 		if(result > 0) {
 			commit(conn);
-			
-			result = new NoticeDao().selectNoticeNo(conn);
-		} else {
+		}else {
 			rollback(conn);
 		}
+		close(conn);
+		
+		return result;
+	}
+	
+	public int deleteNotice(int nno) {
+		
+		Connection conn = getConnection();
+		
+		int result = new NoticeDao().deleteNotice(conn, nno);
 		
 		close(conn);
 		
@@ -76,28 +85,9 @@ public class NoticeService {
 		
 		if(result > 0) {
 			commit(conn);
-		} else {
+		}else {
 			rollback(conn);
 		}
-		
-		close(conn);
-		
-		return result;
-	}
-	
-	public int deleteNotice(int nno) {
-		
-		Connection conn = getConnection();
-		
-		int result = new NoticeDao().deleteNotice(conn, nno);
-		
-		if(result > 0) {
-			commit(conn);
-			
-		} else {
-			rollback(conn);
-		}
-		
 		close(conn);
 		
 		return result;

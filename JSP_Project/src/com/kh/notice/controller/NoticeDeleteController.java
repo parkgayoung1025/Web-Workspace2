@@ -28,32 +28,31 @@ public class NoticeDeleteController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		int nno = Integer.parseInt(request.getParameter("nno"));
-		
-		/*
-		 * UPDATE NOTICE
-		 * SET STATUS = 'N'
-		 * WHERE NORICE_NO = ${nno}
-		 */
-		
+		 
 		int result = new NoticeService().deleteNotice(nno);
-		
+		 
 		if(result > 0) {
-			request.getSession().setAttribute("alartMsg", "공지사항이 삭제되었습니다.");
-			response.sendRedirect(request.getContextPath() + "/list.no");
+			request.getSession().setAttribute("alertMsg", "공지사항 삭제 성공했습니다.");
+		
+			response.sendRedirect(request.getContextPath()+"/list.no");
 		} else {
-			request.setAttribute("errorMsg", "공지사항 삭제 실패");
-			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			request.getSession().setAttribute("alertMsg", "삭제 실패했습니다.");
 		}
+		 
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		
+
+		 
+		 
+		
 	}
 
 }

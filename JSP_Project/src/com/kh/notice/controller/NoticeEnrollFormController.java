@@ -26,8 +26,9 @@ public class NoticeEnrollFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// enrollForm은 페이지 이동만 해 주는 서블릿임
+		// JSP위임
+		// 공지사항 리스트 조회 페이지에서 관리자일때만 글 작성할 수 있게끔 설정
+		// -> 공지사항 작성 뷰 넘기기
 		request.getRequestDispatcher("views/notice/noticeEnrollForm.jsp").forward(request, response);
 	}
 

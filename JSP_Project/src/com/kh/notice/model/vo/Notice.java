@@ -3,19 +3,20 @@ package com.kh.notice.model.vo;
 import java.sql.Date;
 
 public class Notice {
+
+	private int noticeNo;				//	NOTICE_NO
+	private String noticeTitle;			//	NOTICE_TITLE
+	private String noticeContent;		//	NOTICE_CONTENT
+	private String noticeWriter;		//	NOTICE_WRITER
+	private int count;					//	COUNT
+	private Date createDate;			//	CREATE_DATE
+	private String status;				//	STATUS
 	
-	private int noticeNo;
-	private String noticeTitle;
-	private String noticeContent;
-	private String noticeWriter;
-	private int count;
-	private Date createDate;
-	private String status;
 	
 	public Notice() {
 		super();
 	}
-
+	
 	public Notice(int noticeNo, String noticeTitle, String noticeContent, String noticeWriter, int count,
 			Date createDate, String status) {
 		super();
@@ -28,6 +29,7 @@ public class Notice {
 		this.status = status;
 	}
 
+	/* 목록에서 사용할 생성자 */ 
 	public Notice(int noticeNo, String noticeTitle, String noticeWriter, int count, Date createDate) {
 		super();
 		this.noticeNo = noticeNo;
@@ -37,6 +39,7 @@ public class Notice {
 		this.createDate = createDate;
 	}
 
+	/* 상세페이지에서 사용할 생성자 */
 	public Notice(int noticeNo, String noticeTitle, String noticeContent, String noticeWriter, Date createDate) {
 		super();
 		this.noticeNo = noticeNo;
@@ -45,6 +48,7 @@ public class Notice {
 		this.noticeWriter = noticeWriter;
 		this.createDate = createDate;
 	}
+
 
 	public int getNoticeNo() {
 		return noticeNo;

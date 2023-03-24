@@ -15,7 +15,7 @@ import com.kh.member.model.vo.Member;
 /**
  * Servlet implementation class BoardDeleteController
  */
-@WebServlet(urlPatterns = "/delete.bo", name = "boardDeleteServlet")
+@WebServlet("/delete.bo")
 public class BoardDeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -32,26 +32,28 @@ public class BoardDeleteController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int boardNo = Integer.parseInt(request.getParameter("bno"));
-		
+		int bno = Integer.parseInt(request.getParameter("bno"));
 		int userNo = ((Member)request.getSession().getAttribute("loginUser")).getUserNo();
-		
-		Attachment at = new BoardService().selectAttachment(boardNo);
 
-		int result = new BoardService().deleteBoard(boardNo, userNo, at);
+		Attachment at = new BoardService().selectAtachment(bno);
+		System.out.println(at);
+		int result = new BoardService().deleteBoard(bno, userNo, at);
 		
 		if(result > 0) {
-			// 삭제 처리
+			// 삭제처리
 			if(at != null) {
 				String savePath = request.getSession().getServletContext().getRealPath(at.getFilePath());
+				System.out.println(at);
 				new File(savePath+at.getChangeName()).delete();
 			}
-			request.getSession().setAttribute("alertMsg", "성공적으로 게시글을 삭제했습니다.");
+			
+			request.getSession().setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
 			response.sendRedirect(request.getContextPath()+"/list.bo");
-		} else {
-			request.setAttribute("errorMst", "게시글 삭제에 실패했습니다.");
+		}else {
+			request.setAttribute("errorMsg", "게시글 삭제 실패");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
+		
 	}
 
 	/**

@@ -22,7 +22,7 @@ public class MemberDao {
 		String fileName = MemberDao.class.getResource("/sql/member/member-mapper.xml").getPath();
 		
 		try {
-			prop.loadFromXML(new FileInputStream(fileName));
+			prop.loadFromXML(new FileInputStream(fileName)); // 먼저생성하고 try/catch문
 		} catch (InvalidPropertiesFormatException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -32,41 +32,51 @@ public class MemberDao {
 		}
 	}
 	
+	// DB에 접근해 실제로 존재하는 회원인지 아닌지 조회
 	public Member loginMember(Connection conn, String userId, String userPwd) {
 		
-		// Select 문 => ResultSet 객체(조회된 행은 1개이거나 없거나)
+		// SELECT문 => 반환형 ResultSet객체(조회된 행은 1개이거나 없거나)
+		// Member 객체에 담을것임
 		Member m = null;
 		
+		// 필요한 변수들을 셋팅하는 과정이 필요함
 		ResultSet rset = null;
 		
+		// Statement : sql문을 실행할 수 있는 객체이나 보안상 PreparedStatement로 실행
+		// ResultSet 객체를 얻어오기 위해서는 PreparedStatement 객체가 sql문을 실행해줘야 결과값을 받아줄 수 있다.
 		PreparedStatement pstmt = null;
 		
-		String sql = prop.getProperty("loginMember");
+		String sql = prop.getProperty("loginMember"); // member-mapper.xml의 key값인 loginMember을 읽어들인다.
 		
 		try {
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql); // 생성 후 예외처리한것
 			
+			// sql ? 에 값들 넣어주기 -> 미완성된 쿼리문 완성됨
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userPwd);
 			
+			
+			// executeQuery()로 쿼리문 실행시켜서 ResultSet객체 반환
 			rset = pstmt.executeQuery();
 			
+			// rset을 Member타입 객체로 형변환
 			if(rset.next()) {
 				m = new Member(rset.getInt("USER_NO"),
-						rset.getString("USER_ID"),
-						rset.getString("USER_PWD"),
-						rset.getString("USER_NAME"),
-						rset.getString("PHONE"),
-						rset.getString("EMAIL"),
-						rset.getString("ADDRESS"),
-						rset.getString("INTEREST"),
-						rset.getDate("ENROLL_DATE"),
-						rset.getDate("MODIFY_DATE"),
-						rset.getString("STATUS"));
+							   rset.getString("USER_ID"),
+							   rset.getString("USER_PWD"),
+							   rset.getString("USER_NAME"),
+							   rset.getString("PHONE"),
+							   rset.getString("EMAIL"),
+							   rset.getString("ADDRESS"),
+							   rset.getString("INTEREST"),
+							   rset.getDate("ENROLL_DATE"),
+							   rset.getDate("MODIFY_DATE"),
+							   rset.getString("STATUS"));
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		} finally { // 사용했던 자원 반납
 			try {
 				rset.close();
 				pstmt.close();
@@ -97,7 +107,8 @@ public class MemberDao {
 			pstmt.setString(6, m.getAddress());
 			pstmt.setString(7, m.getInterest());
 			
-			result = pstmt.executeUpdate();
+			result = pstmt.executeUpdate(); // DML문 실행
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -131,14 +142,12 @@ public class MemberDao {
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
 		return result;
 	}
 	
 	public Member selectMember(Connection conn, String userId) {
 		
-		// Select문 => ResultSet 객체(id 값은 unique 제약 조건이 걸려있어서 한 행만 조회)
-		
+		// SELECT문 => ResultSet 객체에 저장 (id값을 unique제약조건이 걸려있어서 한 행만 조회)
 		Member m = null;
 		
 		PreparedStatement pstmt = null;
@@ -156,16 +165,16 @@ public class MemberDao {
 			
 			if(rset.next()) {
 				m = new Member(rset.getInt("USER_NO"),
-						rset.getString("USER_ID"),
-						rset.getString("USER_PWD"),
-						rset.getString("USER_NAME"),
-						rset.getString("PHONE"),
-						rset.getString("EMAIL"),
-						rset.getString("ADDRESS"),
-						rset.getString("INTEREST"),
-						rset.getDate("ENROLL_DATE"),
-						rset.getDate("MODIFY_DATE"),
-						rset.getString("STATUS"));
+							   rset.getString("USER_ID"),
+							   rset.getString("USER_PWD"),
+							   rset.getString("USER_NAME"),
+							   rset.getString("PHONE"),
+							   rset.getString("EMAIL"),
+							   rset.getString("ADDRESS"),
+							   rset.getString("INTEREST"),
+							   rset.getDate("ENROLL_DATE"),
+							   rset.getDate("MODIFY_DATE"),
+							   rset.getString("STATUS"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -174,13 +183,12 @@ public class MemberDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		
 		return m;
 	}
 	
 	public int updatePwdMember(Connection conn, String userId, String userPwd, String updatePwd) {
-		 
-		// UPDATE => 처리된 행의 갯수
+		
+		// UPDATE => 처리된 행의 갯수 반환
 		int result = 0;
 		
 		PreparedStatement pstmt = null;
@@ -224,39 +232,38 @@ public class MemberDao {
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
 		return result;
 	}
 	
-	public int checkId(Connection conn, String userId) {
+	public String selectId(Connection conn, String checkId) {
 		
-		// SELECT문 실행 -> 결괏값은 무조건 한 행
-		
-		int result = 0;
+		String id = null;
 		
 		PreparedStatement pstmt = null;
 		
 		ResultSet rset = null;
 		
-		String sql = prop.getProperty("checkId");
+		String sql = prop.getProperty("selectId");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, userId);
+			pstmt.setString(1, checkId);
 			
-			rset = pstmt.executeQuery(); // 업데이트, 인설트, 딜리트만 익스큐트업데이트 사용
+			rset = pstmt.executeQuery();
 			
-			if (rset.next()) {
-				result = rset.getInt(1);
+			if(rset.next()) {
+				id = rset.getString("USER_ID");
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
+		return id;
 		
-		return result;
+		
 	}
 }

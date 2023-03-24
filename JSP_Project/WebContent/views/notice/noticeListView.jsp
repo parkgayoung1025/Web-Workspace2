@@ -8,30 +8,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항 리스트 조회 페이지</title>
 <style>
 	.list-area{
-		border:1px solid white;
-		text-align:center;
+		border: 1px solid white;
+		text-align: center;
 	}
 	.list-area>tbody>tr:hover{
-		background:gray;
-		cursor:pointer;
+		background: gray;
+		cursor: pointer;
 	}
 </style>
 </head>
 <body>
-	<%@ include file ="../common/menubar.jsp" %>
+	<%@ include file="../common/menubar.jsp" %>
 	<div class="outer">
 		<br>
 		<h2 align="center">공지사항</h2>
 		<br>
-		<!-- 공지사항 게시판의 게시판은 관리자만 작성 가능 -->
-		<% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
-			<div align="right" style="width:850px;">
+		
+		<!-- 공지사항게시판의 게시판은 관리자만 작성 가능함 -->
+		<% if(loginUser != null && loginUser.getUserId().equals("admin")){ %>
+			<div align="right" style="width: 850px">
 				<a href="<%= contextPath %>/enrollForm.no" class="btn btn-secondary">글작성</a>
 			</div>
-		<% } %>
+		<%} %>
+		
 		<table class="list-area" align="center">
 			<thead>
 				<tr>
@@ -43,64 +45,67 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <tr>
-					<td>1</td>
-					<td>제목~~~</td>
+			<!-- <tr>
+					<td>3</td>
+					<td>제목~~</td>
 					<td>admin</td>
 					<td>123</td>
 					<td>2020-03-03</td>
 				</tr>
 				<tr>
 					<td>2</td>
-					<td>제목~~~</td>
+					<td>제목~~</td>
 					<td>admin</td>
 					<td>123</td>
 					<td>2020-03-03</td>
 				</tr>
 				<tr>
-					<td>3</td>
-					<td>제목~~~</td>
+					<td>1</td>
+					<td>제목~~</td>
 					<td>admin</td>
 					<td>123</td>
 					<td>2020-03-03</td>
 				</tr> -->
-				 <% if(list.isEmpty()) { %>
-				 	<!-- 리스트가 비어있는 경우 -->
-				 	<tr>
-				 		<td colspan="5">존재하는 공지사항이 없습니다.</td>
-				 	</tr>
-				 <% } else { %>
-					 <% for(Notice n : list) { %>
-					 	<tr onclick="moveNotice(<%= n.getNoticeNo() %>)">
-					 		<td><%= n.getNoticeNo() %></td>
-					 		<td><%= n.getNoticeTitle() %></td>
-					 		<td><%= n.getNoticeWriter() %></td>
-					 		<td><%= n.getCount() %></td>
-					 		<td><%= n.getCreateDate() %></td>
-					 	</tr>
-					 <% } %>
-				 <% } %>
+				<% if(list.isEmpty()) { %>
+					<!-- 리스트가 비어있는 경우 -->
+					<tr>
+						<td colspan="5">존재하는 공지사항이 없습니다.</td>
+					</tr>
+				<%} else{%>
+				
+					<% for(Notice n : list){ %>
+						<tr onclick="moveNotice(<%= n.getNoticeNo() %>)">
+							<td><%= n.getNoticeNo() %></td>
+							<td><%= n.getNoticeTitle() %></td>
+							<td><%= n.getNoticeWriter() %></td>
+							<td><%= n.getCount() %></td>
+							<td><%= n.getCreateDate() %></td>
+						</tr>
+					<%} %>
+				<%} %>
+				
 			</tbody>
 		</table>
 	</div>
+	
 	<script>
-		function moveNotice(nno) {
-			<%-- location.href = "<%= contextPath %>/detail.no?nno="+nno; --%>
-		};
-		
-		$(function(){
-			$(".list-area>tbody>tr").click(function(){
+		function moveNotice(nno){
+			<%-- location.href = "<%= contextPath%>/detail.no?nno="+nno; --%>
+		}
+		// 위아래 같은 방법 아래는 tr태그에 onclick이벤트 제거해야함
+		$(function() {
+			$(".list-area>tbody>tr").click(function() {
 				
-				// 클릭했을 때 해당 공지사항의 번호를 가져올 수 있어야 함
-				let nno = $(this).children().eq(0).text();// 글번호
+				// 클릭했을 때 해당 공지사항의 번호를 가져올 수 있어야함
+				let nno = $(this).children().eq(0).text();
 				
-				// get 방식으로 요청 시 url ? 붙여서 파라미터를 함께 전송할 수 있음
-				// ?키=밸류&키=밸류
+				// get 방식으로 요청시 url ? 붙여서 파라미터를 함께 전송할 수 있음
+				// ?키=벨류&키=벨류
 				// ?물음표 뒤의 내용들을 쿼리스트링이라고 부름
-				// nno값은 클릭했을 때 이동할 게시판의 글 번호
-				location.href = "<%= contextPath %>/detail.no?nno="+nno;
-			}); 
-		});
+				// nno값은 클릭했을 때 이동할 게시판의 글번호
+				location.href = "<%= contextPath%>/detail.no?nno="+nno;
+			});
+		})
 	</script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.kh.board.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -33,23 +32,24 @@ public class ThumbnailDetailController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		int boardNo = Integer.parseInt(request.getParameter("bno"));
-		
-		int result = new BoardService().increaseCount(boardNo);
+	
+	
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		int result = new BoardService().increaseCount(bno);
 		
 		if(result > 0) {
-			Board b = new BoardService().selectBoard(boardNo);
-			ArrayList<Attachment> list = new BoardService().selectAttachmentList(boardNo);
+			Board b = new BoardService().selectThumbnailBoard(bno);
+			ArrayList<Attachment> list = new BoardService().selectThumbnailAttachment(bno);
 			
 			request.setAttribute("b", b);
 			request.setAttribute("list", list);
 			
 			request.getRequestDispatcher("views/board/thumbnailDetailView.jsp").forward(request, response);
 		} else {
-			request.setAttribute("errorMsg", "게시판 상세조회 실패");
+			request.setAttribute("errorMse", "사진게시글 조회 실패");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
+		
 	}
 
 	/**

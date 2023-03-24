@@ -2,17 +2,17 @@ package com.kh.board.model.vo;
 
 public class Reply {
 
-	private int replyNo;
-	private String replyContent;
-	private int refBno;
-	private String replyWriter;
-	private String createDate;
-	private String status;
+	private int replyNo;			//	REPLY_NO
+	private String replyContent;	//	REPLY_CONTENT
+	private int refBno;				//	REF_BNO
+	private String replyWriter;		//	REPLY_WRITER
+	private String createDate;		//	CREATE_DATE
+	private String status;			//	STATUS
 	
 	public Reply() {
 		super();
 	}
-
+	
 	public Reply(int replyNo, String replyContent, int refBno, String replyWriter, String createDate, String status) {
 		super();
 		this.replyNo = replyNo;
@@ -22,7 +22,7 @@ public class Reply {
 		this.createDate = createDate;
 		this.status = status;
 	}
-
+	
 	public Reply(int replyNo, String replyContent, String replyWriter, String createDate) {
 		super();
 		this.replyNo = replyNo;
@@ -84,4 +84,6 @@ public class Reply {
 		return "Reply [replyNo=" + replyNo + ", replyContent=" + replyContent + ", refBno=" + refBno + ", replyWriter="
 				+ replyWriter + ", createDate=" + createDate + ", status=" + status + "]";
 	}
+	
+	
 }

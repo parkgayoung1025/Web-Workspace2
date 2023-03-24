@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class LoginCheckFilter
  */
-@WebFilter({"/insert.bo", "/update.bo", "/delete.bo"})
+@WebFilter({"/insert.bo" , "/update.bo" , "/delete.bo"})
 public class LoginCheckFilter implements Filter {
 
     /**
@@ -35,12 +35,13 @@ public class LoginCheckFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
+		
 		HttpSession session = ((HttpServletRequest)request).getSession();
+		
 		if(session == null || session.getAttribute("loginUser") == null) {
 			request.setAttribute("errorMsg", "로그인 후 이용하실 수 있습니다.");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-		} else {
+		}else {
 			chain.doFilter(request, response);
 		}
 	}

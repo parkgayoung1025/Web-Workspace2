@@ -11,58 +11,59 @@
 	
 	<entry key="insertMember">
 		INSERT INTO MEMBER(USER_NO,
-		                   USER_ID,
-		                   USER_PWD,
-		                   USER_NAME,
-		                   PHONE,
-		                   EMAIL,
-		                   ADDRESS,
-		                   INTEREST)
-		            VALUES(SEQ_UNO.NEXTVAL,
-		                   ?,
-		                   ?,
-		                   ?,
-		                   ?,
-		                   ?,
-		                   ?,
-		                   ?)
+							USER_ID,
+							USER_PWD,
+							USER_NAME,
+							PHONE,
+							EMAIL,
+							ADDRESS,
+							INTEREST)
+					VALUES (SEQ_UNO.NEXTVAL,
+							?,
+							?,
+							?,
+							?,
+							?,
+							?,
+							?
+					)
 	</entry>
 	
 	<entry key="updateMember">
 		UPDATE MEMBER
 		SET USER_NAME = ?,
-		    PHONE = ?,
-		    EMAIL = ?,
-		    ADDRESS = ?,
-		    INTEREST = ?,
-		    MODIFY_DATE = SYSDATE
+			PHONE = ?,
+			EMAIL = ?,
+			ADDRESS = ?,
+			INTEREST = ?,
+			MODIFY_DATE = SYSDATE
 		WHERE USER_ID = ?
 	</entry>
 	
 	<entry key="selectMember">
-		SELECT * FROM MEMBER
+		SELECT *
+		FROM MEMBER
 		WHERE USER_ID = ?
 		  AND STATUS = 'Y'
 	</entry>
 	
 	<entry key="updatePwdMember">
-		UPDATE MEMBER SET
-		USER_PWD = ?,
+		UPDATE MEMBER
+		SET USER_PWD = ?,
 		MODIFY_DATE = SYSDATE
 		WHERE USER_ID = ? AND USER_PWD = ?
 	</entry>
 	
 	<entry key="deleteMember">
-		UPDATE MEMBER SET
-		STATUS = 'N',
+		UPDATE MEMBER
+		SET STATUS = 'N',
 		MODIFY_DATE = SYSDATE
 		WHERE USER_ID = ?
 		  AND USER_PWD = ?
 	</entry>
-	
-	<entry key="checkId">
-		SELECT COUNT(*)
+	<entry key="selectId">
+		SELECT USER_ID
 		FROM MEMBER
 		WHERE USER_ID = ?
 	</entry>
-</properties>
+</properties> 

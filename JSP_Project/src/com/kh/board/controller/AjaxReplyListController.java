@@ -16,7 +16,7 @@ import com.kh.board.model.vo.Reply;
 /**
  * Servlet implementation class AjaxReplyListController
  */
-@WebServlet("/rlist.bo")
+@WebServlet("/replyList.bo")
 public class AjaxReplyListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,14 +33,19 @@ public class AjaxReplyListController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int boardNo = Integer.parseInt(request.getParameter("bno"));
+		int bno = Integer.parseInt(request.getParameter("bno"));
 		
-		ArrayList<Reply> list = new BoardService().selectReplyList(boardNo);
+		// db로부터 bno값을 가지고 댓글 select
+		// select된 값이 있다면 응답결과 보내줌
+		ArrayList<Reply> list = new BoardService().selectReply(bno);
 		
-		// Gson을 이용해서 응답 ArrayList -> JSONArray로 변환
 		response.setContentType("application/json; charset=UTF-8");
 		
-		new Gson().toJson(list, response.getWriter());
+		if(list != null) {
+			Gson gson = new Gson();
+			
+			gson.toJson(list, response.getWriter());
+		}
 	}
 
 	/**

@@ -2,19 +2,20 @@ package com.kh.board.model.vo;
 
 import java.sql.Date;
 
+// DB의 BOARD 테이블에 있는 데이터를 SELECT문으로 조회했을 때 담아줄 수 있는 역할의 클래스
 public class Board {
-
-	private int boardNo;
-	private int boardType;
-	private String category; // 게시글 작성 시 번호(category_no)를 그대로 받는 경우와, 조회 시 카테고리명(category_name)으로 조회하는 케이스
-	private String boardTitle;
-	private String boardContent;
-	private String boardWriter; // 작성 시 회원번호(user_no), 조회 시 회원아이디(user_id)를 저장
-	private int count;
-	private Date createDate;
-	private String status;
 	
-	private String tilteImg;//	filePath + changeName;
+	private int boardNo;				//	BOARD_NO
+	private int boardType;				//	BOARD_TYPE
+	private String category;			//	CATEGORY_NO 게시글 작성시 번호(category_no)를 그대로 받는 경우와, 조회시 카테고리명(category_name)으로 조회하는 케이스
+	private String boardTitle;			//	BOARD_TITLE
+	private String boardContent;		//	BOARD_CONTENT
+	private String boardWriter;			//	BOARD_WRITER 작성시 회원번호(user_no), 조회시(user_id)를 저장
+	private int count; 					//	COUNT
+	private Date createDate;			//	CREATE_DATE
+	private String status;				//	STATUS
+	
+	private String titleImg;
 
 	public Board() {
 		super();
@@ -44,6 +45,7 @@ public class Board {
 		this.createDate = createDate;
 	}
 
+	/* 상세보기 화면 생성자 */
 	public Board(int boardNo, String category, String boardTitle, String boardContent, String boardWriter,
 			Date createDate) {
 		super();
@@ -127,18 +129,21 @@ public class Board {
 		this.status = status;
 	}
 
-	public String getTilteImg() {
-		return tilteImg;
+	public String getTitleImg() {
+		return titleImg;
 	}
 
-	public void setTilteImg(String tilteImg) {
-		this.tilteImg = tilteImg;
+	public void setTitleImg(String titleImg) {
+		this.titleImg = titleImg;
 	}
 
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardType=" + boardType + ", category=" + category + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardWriter=" + boardWriter + ", count=" + count
-				+ ", createDate=" + createDate + ", status=" + status + ", tilteImg=" + tilteImg + "]";
+				+ ", createDate=" + createDate + ", status=" + status + ", titleImg=" + titleImg + "]";
 	}
+	
+	
+
 }

@@ -7,11 +7,16 @@ import com.kh.common.JDBCTemplate;
 import com.kh.member.model.dao.MemberDao;
 import com.kh.member.model.vo.Member;
 
+// DB에 접근해서 얻어온 변수들을가지고 일치항목을 찾기위해
+// Controller에서 정보를 넘겨 처리하게끔 한 곳
 public class MemberService {
-	
+
 	public Member loginMember(String userId, String userPwd) {
+		
 		Connection conn = JDBCTemplate.getConnection();
 		
+		// Connection객체와 userId, userPwd를 가지고 MemberDao()를 호출해서 
+		// DB에 접근해 실제로 존재하는 아이디, pwd인지 체크해보도록 함
 		Member m = new MemberDao().loginMember(conn, userId, userPwd);
 		
 		try {
@@ -32,11 +37,9 @@ public class MemberService {
 		
 		// 트랜잭션 처리
 		if(result > 0) { // 성공
-			// 커밋
-			JDBCTemplate.commit(conn);
-		} else { // 실패
-			// 롤백
-			JDBCTemplate.rollback(conn);
+			JDBCTemplate.commit(conn); // 커밋
+		}else { // 실패
+			JDBCTemplate.rollback(conn); // 롤백
 		}
 		
 		// 사용한 자원 반납 conn.close();
@@ -48,7 +51,7 @@ public class MemberService {
 	
 	/**
 	 * 회원 정보 수정용 서비스
-	 * @param m : 수정할 회원의 정보를 담은 Member 객체
+	 * @param m : 수정할 회원의 정보를 담은 Member객체
 	 * @return => 수정한 회원의 갱신된 정보
 	 */
 	public Member updateMember(Member m) {
@@ -63,7 +66,7 @@ public class MemberService {
 			JDBCTemplate.commit(conn);
 			
 			updateMem = new MemberDao().selectMember(conn, m.getUserId());
-		} else { // 실패
+		}else { // 실패
 			JDBCTemplate.rollback(conn);
 		}
 		
@@ -80,17 +83,18 @@ public class MemberService {
 		
 		Member updateMem = null;
 		
-		if(result > 0) { // 성공
+		if(result > 0) {
 			JDBCTemplate.commit(conn);
 			
 			updateMem = new MemberDao().selectMember(conn, userId);
-		} else { // 실패
+		}else {
 			JDBCTemplate.rollback(conn);
+			
 		}
-		
 		JDBCTemplate.close(conn);
 		
 		return updateMem;
+		
 	}
 	
 	public int deleteMember(String userId, String userPwd) {
@@ -101,23 +105,24 @@ public class MemberService {
 		
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
-		} else {
+			
+		}else {
 			JDBCTemplate.rollback(conn);
 		}
-		
 		JDBCTemplate.close(conn);
 		
 		return result;
 	}
 	
-	public int checkId(String userId) {
+	public String selectId(String checkId) {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int result = new MemberDao().checkId(conn, userId);
+		String id = new MemberDao().selectId(conn, checkId);
 		
 		JDBCTemplate.close(conn);
 		
-		return result;
+		return id;
 	}
 }
+

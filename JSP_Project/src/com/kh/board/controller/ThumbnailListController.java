@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.board.model.service.BoardService;
 import com.kh.board.model.vo.Board;
-import com.kh.common.model.vo.PageInfo;
 
 /**
  * Servlet implementation class ThumbnailListController

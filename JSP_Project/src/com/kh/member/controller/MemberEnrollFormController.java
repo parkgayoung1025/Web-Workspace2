@@ -19,13 +19,14 @@ public class MemberEnrollFormController extends HttpServlet {
      */
     public MemberEnrollFormController() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		// 포워딩 방식
 		request.getRequestDispatcher("views/member/memberEnrollForm.jsp").forward(request, response);
 	}
@@ -34,6 +35,7 @@ public class MemberEnrollFormController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

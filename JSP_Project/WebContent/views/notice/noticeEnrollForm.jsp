@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항 작성 페이지</title>
 <style>
 	#enroll-form input, #enroll-form textarea{
-		width:100%;
-		box-sizing : border-box;
+		width: 100%;
+		box-sizing: border-box;
 	}
 </style>
 </head>
@@ -21,23 +21,25 @@
 		<br>
 		<form id="enroll-form" action="<%= contextPath %>/insert.no" method="post">
 			<!-- 현재 로그인한 유저의 정보를 알아내는 방법 중 2번째 방법 
-			1. hidden 타입의 input 태그로 현재 세션에 있는 loginUser 정보를 담아주는 방법 -->
-			<input type="hidden" name="userNo" value="<%= loginUser.getUserNo() %>">
-			<table align="center">
-				<tr>
-					<th width="50">제목</th>
-					<td width="350"><input type="text" name="title" required></td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<textarea name="content" rows="10" style="resize:none" required></textarea>
-					</td>
-				</tr>
-			</table>
+				 1. hidden 타입의 input태그로 현재 세션에 있는 loginUser정보를 담아주는 방법
+			 -->
+			 <input type="hidden" name="userNo" value="<%= loginUser.getUserNo() %>">
+			 
+			 <table align="center" >
+			 	<tr>
+			 		<th width="50">제목</th>
+			 		<td width="350"><input type="text" name="title" required></td>
+			 	</tr>
+			 	<tr>
+			 		<th>내용</th>
+			 		<td></td>
+			 	</tr>
+			 	<tr>
+			 		<td colspan="2">
+			 			<textarea name="content" rows="10" style="resize: none" required></textarea>
+			 		</td>
+			 	</tr>
+			 </table>
 			<br><br>
 			<div align="center">
 				<button type="submit">등록</button>

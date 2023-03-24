@@ -1,6 +1,7 @@
 package com.kh.notice.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,32 +31,35 @@ public class NoticeDetailController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// 클릭했을 때의 공지사항 글 번호 가져오기
-		int nno = Integer.parseInt(request.getParameter("nno"));
+		//  클릭했을 때 공지사항 글 번호 가져오기
+		int nno = Integer.parseInt(request.getParameter("nno")); // nno : 글번호 -> 정수형의 데이터로 넘겨줘야하기 때문에 int로 형변환
 		/*
 		 * SELECT *
 		 * FROM NOTICE
-		 * WHERE NOTICE_NO = ${nno}
+		 * WHERE NOTICE_NO = &{nno}
 		 */
 		
 		// 조회수 증가용 서비스
 		/*
 		 * UPDATE NOTICE SET
-		 * COUNT = COUNT+1
+		 * COUNT = COUNT + 1
 		 * WHERE NOTICE_NO = ${nno}
 		 */
 		int result = new NoticeService().increaseCount(nno);
 		
 		// 조회수 증가에 성공했을 때 -> 공지사항 상세 조회 후 noticeDetailView로 포워딩
 		if(result > 0) {
+			// 데이터 조회 서비스 : 공지사항 정보 Notice n에 담기
 			Notice n = new NoticeService().selectNotice(nno);
 			request.setAttribute("n", n);
 			
 			request.getRequestDispatcher("views/notice/noticeDetailView.jsp").forward(request, response);
-		} else { // 조회수 증가 실패 시 -> 에러 페이지로 포워딩
+			
+		} else { // 조회수 증가 실패 시 -> 에러페이지로 포워딩
 			request.setAttribute("errorMsg", "공지사항 조회 실패");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
+		
 	}
 
 	/**

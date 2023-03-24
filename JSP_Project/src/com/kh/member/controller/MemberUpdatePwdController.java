@@ -1,6 +1,7 @@
 package com.kh.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,7 @@ public class MemberUpdatePwdController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -36,32 +38,32 @@ public class MemberUpdatePwdController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		request.setCharacterEncoding("UTF-8");
 		
 		String userPwd = request.getParameter("userPwd");
 		String updatePwd = request.getParameter("updatePwd");
+
+		// 아이디값 얻어오기
 		String userId = ((Member)request.getSession().getAttribute("loginUser")).getUserId();
 		
+		Member updateMem = new MemberService().updatePwdMember(userId, userPwd, updatePwd);
 		/*
 		 * UPDATE SET MEMBER
 		 * MEMBER_PWD = ${updatePwd}
-		 * WHERE MEMBER_PWD = ${userPwd} AND USER_ID = ${user_id} // ${} = ?
+		 * WHERE MEMBER_PWD = ${userPwd} AND USER_ID = {userId}
 		 */
-		
-		Member updateMem = new MemberService().updatePwdMember(userId, userPwd, updatePwd);
 		
 		HttpSession session = request.getSession();
 		
-		if(updateMem == null) { // 실패
-			session.setAttribute("alertMsg", "비밀번호 변경에 실패했습니다.");
-		} else { // 성공
+		if(updateMem == null) {
+			session.setAttribute("alertMsg", "비밀번호 변경에 실패했습니다");
+		}else {
 			session.setAttribute("alertMsg", "성공적으로 비밀번호가 변경되었습니다.");
 			session.setAttribute("loginUser", updateMem);
 		}
 		
-		response.sendRedirect(request.getContextPath() + "/myPage.me");
-		
+		response.sendRedirect(request.getContextPath()+"/mypage.me");
 	}
 
 }

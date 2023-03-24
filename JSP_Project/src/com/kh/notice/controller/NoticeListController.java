@@ -32,14 +32,14 @@ public class NoticeListController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// 1) 공지사항 전체 리스트 조회
+		// 1) 공지사항 전체리스트 조회 한 후 
+		// 모든 리스트를 조회할것이기 때문에 selectNoticeList()의 매개변수가 없음
 		ArrayList<Notice> list = new NoticeService().selectNoticeList();
-		// SELECT * FROM NOTICE WHERE STATUS = 'Y'
+		// SELECT * FORM NOTICE WHERE STATUS = 'Y'
 		
-		System.out.println(list);
-		
-		// 2) 조회 결과를 담아서 응답 페이지로 포워딩
+		// 2) 조회 결과를 담아서(request/session...) 응답페이지로 포워딩
 		request.setAttribute("list", list);
+		
 		request.getRequestDispatcher("views/notice/noticeListView.jsp").forward(request, response);
 	}
 

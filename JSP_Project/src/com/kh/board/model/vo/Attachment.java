@@ -3,26 +3,26 @@ package com.kh.board.model.vo;
 import java.sql.Date;
 
 public class Attachment {
-
-	private int fileNo;
-	private int refBno;
-	private String originName;
-	private String changeName;
-	private String filePath;
-	private Date uploadDate;
-	private int fileLevel;
-	private String status;
 	
+	private int fileNo;				//	FILE_NO
+	private int refBno;				//	REF_BNO 	-> BOARD 테이블의 PK값 저장
+	private String orignName;		//	ORIGIN_NAME -> 업로드당시 원본 이름
+	private String changeName;		//	CHANGE_NAME -> 동일한 파일명은 존재할수 없기때문에 동일명 바꿔줄 이름
+	private String filePath;		//	FILE_PATH
+	private Date uploadDate;		//	UPLOAD_DATE
+	private	int fileLevel;			//	FILE_LEVEL	-> 이미지 형태의 데이터를 여러개 올릴경우 각각의 이미지파일에 번호를 붙혀 기능을 부여
+	private	String status;			//	STATUS
+
 	public Attachment() {
 		super();
 	}
 
-	public Attachment(int fileNo, int refBno, String originName, String changeName, String filePath, Date uploadDate,
+	public Attachment(int fileNo, int refBno, String orignName, String changeName, String filePath, Date uploadDate,
 			int fileLevel, String status) {
 		super();
 		this.fileNo = fileNo;
 		this.refBno = refBno;
-		this.originName = originName;
+		this.orignName = orignName;
 		this.changeName = changeName;
 		this.filePath = filePath;
 		this.uploadDate = uploadDate;
@@ -46,12 +46,12 @@ public class Attachment {
 		this.refBno = refBno;
 	}
 
-	public String getOriginName() {
-		return originName;
+	public String getOrignName() {
+		return orignName;
 	}
 
-	public void setOriginName(String originName) {
-		this.originName = originName;
+	public void setOrignName(String orignName) {
+		this.orignName = orignName;
 	}
 
 	public String getChangeName() {
@@ -96,8 +96,9 @@ public class Attachment {
 
 	@Override
 	public String toString() {
-		return "Attachment [fileNo=" + fileNo + ", refBno=" + refBno + ", originName=" + originName + ", changeName="
+		return "Attachment [fileNo=" + fileNo + ", refBno=" + refBno + ", orignName=" + orignName + ", changeName="
 				+ changeName + ", filePath=" + filePath + ", uploadDate=" + uploadDate + ", fileLevel=" + fileLevel
 				+ ", status=" + status + "]";
 	}
+
 }

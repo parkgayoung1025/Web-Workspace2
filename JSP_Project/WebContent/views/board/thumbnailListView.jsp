@@ -8,12 +8,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>사진게시판</title>
 <style>
-	.outer{ min-height:800px; }
+	.outer{
+		min-height: 800px;
+	}
 	.list-area{
-		width:760px;
-		margin:auto;
+		width: 760px;
+		margin: auto;
 	}
 </style>
 </head>
@@ -21,54 +23,79 @@
 	<%@ include file="../common/menubar.jsp" %>
 	
 	<div class="outer">
-		<br>
-		<h2 style="text-align:center;">사진 게시판</h2>
-		<br>
+		<br> <h2 style="text-align:center;">사진게시판</h2> <br>
+		
 		<% if(loginUser != null) { %>
-			<div align="right" style="width:860px">
+			<div align="right" style="width: 860px">
 				<a href="<%= contextPath %>/insert.th" class="btn btn-secondary">글작성</a>
-				<br><br>
 			</div>
 		<% } %>
+		
 		<div class="list-area">
-			<% int count = 1; %>
-			<% for (Board b : list) { %>
-				<div class="thumbnail" align="center">
-					<input type="hidden" value="<%= b.getBoardNo() %>">
-					<img src="<%= contextPath %><%= b.getTilteImg() %>" width="200px" hight="150px">
-					<p>
-						NO.<%= count++ %> <%= b.getBoardTitle() %> 
-						<br>
-						조회수 : <%= b.getCount() %>
-					</p>
-				</div>
-			<% } %>
+			
+		<% int count = 1; %>
+		<% for(Board b : list) { %>
+			<div class="thumbnail" align="center">
+				<input type="hidden" value=<%= b.getBoardNo() %>>
+				<img src="<%= contextPath %><%= b.getTitleImg() %>" width="200px" height="150ps">
+				<p>
+					NO. <%= count++ %> <%= b.getBoardTitle() %>
+					<br>
+					조회수 : <%= b.getCount() %>
+				</p>
+				<br>
+			</div>
+		<%} %>
+				
+			
+<%-- 			<img src="<%= contextPath %>/resources/thumb_upfiles/animal1.gif" width="200px" height="150ps"> --%>
+			
 <!-- 			<div class="thumbnail" align="center"> -->
 <!-- 				<input type="hidden" value="2"> -->
-<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal2.gif" width="200px" hight="150px"> --%>
+<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal2.gif" width="200px" height="150ps"> --%>
 <!-- 				<p> -->
-<!-- 					NO.2 두 번째 글 제목  -->
-<!-- 					<br> -->
-<!-- 					조회수 : 1 -->
+<!-- 					NO.2 두번째 글제목<br> -->
+<!-- 					조회수 : 2 -->
 <!-- 				</p> -->
 <!-- 			</div> -->
+	
 <!-- 			<div class="thumbnail" align="center"> -->
 <!-- 				<input type="hidden" value="3"> -->
-<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal3.gif" width="200px" hight="150px"> --%>
+<%-- 				<img src="<%= contextPath %>/resources/thumb_upfiles/animal3.gif" width="200px" height="150ps"> --%>
 <!-- 				<p> -->
-<!-- 					NO.3 세 번째 글 제목  -->
-<!-- 					<br> -->
-<!-- 					조회수 : 1 -->
+<!-- 					NO.3 세번째 글제목<br> -->
+<!-- 					조회수 : 3 -->
 <!-- 				</p> -->
 <!-- 			</div> -->
 		</div>
 	</div>
+	
 	<script>
-		$(function(){
+		$(function() {
 			$(".thumbnail").click(function(){
-				location.href="<%= contextPath %>/detail.th?bno="+$(this).children().eq(0).val();
-			});
+				location.href = "<%= contextPath %>/detail.th?bno="+$(this).children().eq(0).val();
+			})
 		});
 	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
