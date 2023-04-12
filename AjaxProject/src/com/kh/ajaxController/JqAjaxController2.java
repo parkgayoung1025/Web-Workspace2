@@ -51,7 +51,7 @@ public class JqAjaxController2 extends HttpServlet {
 //		response.setContentType("text/html; charset=UTF-8");
 //		response.getWriter().print(responseData);
 	
-		// 버전2) 응 답데이터 여러 개 보내고 싶을 때 "JSON"형태로 데이터 셋팅
+		// 버전2) 응답데이터 여러 개 보내고 싶을 때 "JSON"형태로 데이터 셋팅
 		/*
 		 * JSON(JavaScript Object Notaion : 자바스크립트의 객체 표기법)
 		 *  - ajax 통신 시 데이터 전송에 사용되는 포맷 중에 하나
